@@ -1,5 +1,6 @@
 //authentication handled with passport for google
 import passport from 'passport';
+import db_access from './../utils/db_access';
 
 import {
     Strategy as GoogleStrat
@@ -11,5 +12,5 @@ passport.use(new GoogleStrat({
     clientSecret: process.env.GOOGLE_CLIENT_SEC,
     callbackURL: '/auth/google/callback',
 }, (accessToken, refreshToken, profile, done) => {
-    console.log(`profile:${JSON.stringify(profile,null,2)}`);
+    db_access(profile, done, "google");
 }));

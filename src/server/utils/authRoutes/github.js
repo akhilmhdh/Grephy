@@ -1,17 +1,7 @@
-import octonode from 'octonode';
+import passport from 'passport';
 
-export default (app, auth_url) => {
-    app.get('/auth/github', (req, res) => {
-        res.redirect(auth_url)
-    });
-
-    app.get('/auth/github/callback', (req, res) => {
-        octonode.auth.login(req.query.code, (err, token) => {
-            const ghme = octonode.client(token).me();
-            ghme.info((err, data, header) => {
-                console.log(data)
-            });
-        });
-    });
-
-}
+export default (app) => {
+    app.get('/auth/github', passport.authenticate('github'));
+    
+    app.get('/auth/github/callback', passport.authenticate('github'));
+};

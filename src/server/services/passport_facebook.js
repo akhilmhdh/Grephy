@@ -1,5 +1,6 @@
 //authentication handled with passport for fb
 import passport from 'passport';
+import db_access from './../utils/db_access';
 
 import {
     Strategy as FBStrat
@@ -10,5 +11,5 @@ passport.use(new FBStrat({
     clientSecret: process.env.FB_CLIENT_SEC,
     callbackURL: '/auth/facebook/callback'
 }, (accessToken, refreshToken, profile, done) => {
-    console.log(`profile:${JSON.stringify(profile,null,2)}`);
+    db_access(profile, done, "facebook");
 }));
