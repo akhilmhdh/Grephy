@@ -2,21 +2,24 @@ import 'babel-polyfill';
 import './server/config/config.js';
 
 import express from "express";
-import mongoose from './server/db/mongoose';
+import createStore from './server/utils/createStore';
+import { matchRoutes } from 'react-router-config';
+import routes from './client/routes';
+//token-cookie based authentication
 import passport from 'passport';
 import cookieSession from 'cookie-session';
 import bodyParser from 'body-parser';
+//db mongoose configurations
+import mongoose from './server/db/mongoose';
 import './server/db/models/user';
-import './server/db/models/channels';
+import './server/db/models/channel';
+import './server/db/models/field';
 //ssh rendering template and static route
 import renderer from "./server/utils/renderer";
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
-
-const User = mongoose.model('users');
-const Channel = mongoose.model('channels');
 
 passport.deserializeUser(async (id, done) => {
   const user = await User.findById(id);
@@ -33,6 +36,9 @@ import googleAuth from './server/utils/authRoutes/google';
 import fbAuth from './server/utils/authRoutes/fb';
 import githubAuth from './server/utils/authRoutes/github';
 import authUtils from './server/utils/authRoutes/utils';
+
+//api routes
+import apiAuth from './server/api/index';
 
 const app = express();
 
@@ -52,54 +58,16 @@ fbAuth(app);
 githubAuth(app);
 authUtils(app);
 
-app.post('/channels/new', async (req, res) => {
-  const {
-    name,
-    dual,
-    xAxis,
-    yAxis
-  } = req.body;
-  const existingChannel = await Channel.findOne({
-    name
-  });
-  if (existingChannel) {
-    return res.send("Channel already exits").redirect('/');
-  }
-  const newChannel = await new Channel({
-    name,
-    _user:"5b9d680719c69817cc328739",
-    dual,
-    xAxis,
-    yAxis,
-  });
-  newChannel.save().then(() => {
-    return newChannel.getChannelToken();
-  }).then((token) => {
-    res.send(token);
-  });
-});
-
-app.get('/channels/list',async (req,res)=>{
-    const channelList=await Channel.find({_user:'5b9d680719c69817cc328739'});
-    const filteredList=channelList.map(({name,xAxis,yAxis,_id})=>{
-      return({
-        name,
-        xAxis,
-        yAxis,
-        _id
-      })
-    });
-    res.send(filteredList);
-});
-
-app.get('/channels/:id',async (req,res)=>{
-  const channelList=await Channel.findById(req.params.id);
-  res.send(channelList);
-});
-
+apiAuth(app);
 
 app.get("*", (req, res) => {
-  res.send(renderer());
+  const store=createStore()
+  const promises=matchRoutes(routes,req.path).map(({route})=>{
+    return route.loadData ? route.loadData(store):null;
+  })
+  Promise.all(promises).then(()=>{
+    res.send(renderer(req,store));
+  });
 });
 
 app.listen(process.env.PORT, () => {

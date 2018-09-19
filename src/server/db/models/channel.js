@@ -8,31 +8,19 @@ const channelSchema = new mongoose.Schema({
         trim: true,
         minlength: 1,
     },
+    description:{
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 1,
+    },
     _user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
     token: {
         type: String
-    },
-    dual: {
-        type: Boolean,
-        required: true
-    },
-    xAxis: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 1,
-    },
-    yAxis: {
-        type: String,
-        trim: true,
-        minlength: 1,
-        default: "Time"
-    },
-    xData: [Number],
-    yData: [String]
+    }
 });
 
 channelSchema.methods.getChannelToken = function () {
