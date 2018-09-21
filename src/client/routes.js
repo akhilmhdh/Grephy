@@ -3,6 +3,7 @@ import App from './App';
 import HomePage from './pages/HomePage';
 import ChannelPage from './pages/ChannelPage';
 import FieldPage from './pages/FieldPage';
+import NewChannelPage from './pages/newChannelPage';
 
 export default [{
     ...App,
@@ -15,6 +16,11 @@ export default [{
             ...ChannelPage,
             path: '/channel',
             exact: true
+        },
+        {
+            ...NewChannelPage,
+            path:'/channel/new',
+            exact:true
         },
         {
             ...FieldPage,

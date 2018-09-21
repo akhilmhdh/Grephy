@@ -1,8 +1,9 @@
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 import Header from './components/header';
+import {authVerify} from './actions/authVerify';
 
-const App = ({route}) => {
+const App= ({route}) => {
     return(
         <div>
             <Header/>
@@ -12,5 +13,6 @@ const App = ({route}) => {
 };
 
 export default {
-    component:App
+    component:App,
+   loadData:({dispatch}) => dispatch(authVerify())
 };

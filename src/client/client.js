@@ -8,8 +8,17 @@ import { renderRoutes } from 'react-router-config';
 import {BrowserRouter}from 'react-router-dom';
 import routes from './routes';
 import reducers from './reducers';
+import axios from 'axios';
 
-const store=createStore(reducers,window.INITIAL_STATE,applyMiddleware(thunk));
+const axiosInstance=axios.create({
+    baseURL:'http://localhost:3000'
+});
+
+const preloadedStore=window.INITIAL_STATE;
+
+delete window.INITIAL_STATE;
+
+const store=createStore(reducers,preloadedStore,applyMiddleware(thunk.withExtraArgument(axiosInstance)));
 
 ReactDOM.hydrate(
     <Provider store={store}>

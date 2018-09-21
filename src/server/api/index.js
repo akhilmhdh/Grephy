@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
-
+import { authentication } from '../middleware/auth';
 const User = mongoose.model('users');
 const Channel = mongoose.model('channels');
 const Field = mongoose.model('fields');
 
 export default (app) => {
-    app.post('/channels/new', async (req, res) => {
+    app.post('/channels/new', authentication,async (req, res) => {
         const {
             name,
             description
@@ -14,19 +14,19 @@ export default (app) => {
         const newChannel = await new Channel({
             name,
             description,
-            _user: "5b9d680719c69817cc328739"
+            _user: req.user._id
         });
 
         newChannel.save().then(() => {
             return newChannel.getChannelToken();
         }).then((token) => {
-            res.send(token);
+            res.status(200).send();
         });
     });
 
-    app.get('/channels/list', async (req, res) => {
+    app.get('/channels/list',authentication,async (req, res) => {
         const channelList = await Channel.find({
-            _user: '5b9d680719c69817cc328739'
+            _user: req.user._id
         });
         const filteredList = channelList.map(({
             name,

@@ -10,6 +10,5 @@ passport.use(new GitHubStrat({
     clientSecret: process.env.GITHUB_CLIENT_SEC,
     callbackURL: '/auth/github/callback'
 }, (accessToken, refreshToken, profile, done) => {
-    console.log(profile.id);
     db_access(profile, done, 'github');
 }));
