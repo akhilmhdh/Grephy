@@ -7,13 +7,16 @@ class channelSection extends Component{
     componentDidMount(){
         this.props.fetchChannelList()
     }
-    renderChannelList(e){
+    renderChannelList({name,description,token}){
         return (
-        <li key={e.name}>
+        <li key={name}>
         <div>
-            <h1>{e.name}</h1>
-            <p>{e.description}</p>
+        <Link to={`/channel/${token}/fields`}>
+            <h1>{name}</h1>        
+        </Link>
+            <p>{description}</p>
         </div>
+
         </li>);
     }
     render(){

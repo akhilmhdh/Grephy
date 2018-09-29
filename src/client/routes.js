@@ -24,7 +24,7 @@ export default [{
         },
         {
             ...FieldPage,
-            path: '/channel/field',
+            path: '/channel/:id/fields',
             exact: true
         }
     ]

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { authentication } from '../middleware/auth';
+import jwt from 'jsonwebtoken'
 const User = mongoose.model('users');
 const Channel = mongoose.model('channels');
 const Field = mongoose.model('fields');
@@ -31,96 +32,120 @@ export default (app) => {
         const filteredList = channelList.map(({
             name,
             description,
-            _id
+            token
         }) => {
             return ({
                 name,
                 description,
-                _id
+                token
             });
         });
         res.send(filteredList);
     });
 
     app.get('/channels/:id', async (req, res) => {
-        const channel = await Channel.findById(req.params.id);
+        const channel = await Channel.findByToken(req.params.id);
         res.send(channel);
     });
+    
 
-    app.post('/channels/fields/new', async (req, res) => {
+    app.post('/channels/:id/fields/new', async (req, res) => {
+        const channel = await Channel.findByToken(req.params.id);
         const {
             name,
-            yAxisName,
-            xAxisName,
-            channelID
+            yAxis
         } = req.body;
-
+        
         const newField = new Field({
-            _channel: channelID,
+            _channel: channel._id,
             name,
-            yAxis: {
-                name: yAxisName,
-            }
+            yAxis
         });
-        newField.xAxis.push({
-            name: xAxisName
-        });
+        if(req.body.xAxis){
+            newField.xAxis.name=req.body.xAxis;
+        }
         newField.save().then(() => {
             res.send("ok");
         })
     });
 
-    app.get('/channels/fields/list', async (req, res) => {
+    app.get('/channels/fields/list/:id', async (req, res) => {
+        const channel = await Channel.findByToken(req.params.id);
         const fieldList = await Field.find({
-            _channel: "5b9ff6768e3bab344c33ef70"
+            _channel: channel._id
         });
         res.send(fieldList);
     });
 
-    app.put('/channels/fields/:id/addX', async (req, res) => {
-        const {
-            xName
-        } = req.body;
-        const field = await Field.findOneAndUpdate({
-            _channel: "5b9ff6768e3bab344c33ef70",
-            _id: req.params.id
-        }, {
-            $push: {
-                xAxis: [{
-                    name: xName
-                }]
-            }
+    app.patch('/channels/:id/fields/:name',async (req,res)=>{
+        const channel = await Channel.findByToken(req.params.id);
+        const field=await Field.findOne({
+            _channel:channel._id,
+            name:req.params.name,
         });
-        res.send('ok');
+        if(field.xAxis.name==="Time"){
+            field.xAxis.value.push(new Date().getTime());
+        }else{
+            field.xAxis.value.push(req.query.xAxis || field.xAxis.value[field.xAxis.value.length-1] || null);
+        }
+        field.count+=1;
+        field.dataFields.forEach(element => {
+            const test=req.query[element.name];
+            !test?element.value.push(element.value[element.value.length-1] || null):element.value.push(test);
+        });
+        field.save().then(()=>{
+            res.send(field);
+        });
     });
 
-    app.delete('/channels/fields/:id/delX', async (req, res) => {
+    app.put('/channels/:id/fields/:name/addX', async (req, res) => {
         const {
-            xName
+            dataName
         } = req.body;
+        const channel = await Channel.findByToken(req.params.id);
+        const field = await Field.findOne({
+            _channel: channel._id,
+            name:req.params.name
+        });
+        const arr=new Array(field.count).fill(null);
+        field.dataFields.push({name:dataName,value:arr});
+        field.save().then(()=>{
+            res.send('ok');
+        });
+    });
+
+    app.post('/channels/:id/fields/:name/delX', async (req, res) => {
+        const {
+            dataName
+        } = req.body;
+        const channel = await Channel.findByToken(req.params.id);
         const field = await Field.findOneAndUpdate({
-            _channel: "5b9ff6768e3bab344c33ef70",
-            _id: req.params.id
+            _channel: channel._id,
+            name:req.params.name 
         }, {
             $pull: {
-                xAxis: {
-                    name: xName
+                dataFields: {
+                    name: dataName
                 }
             }
         });
         res.send('ok');
     });
 
-    app.delete('/channels/fields/del/:id', async (req, res) => {
+    app.delete('/channels/:id/fields/:name/del', async (req, res) => {
+        const {id,name}=req.params;
+        const channel = await Channel.findByToken(id);
         const field = await Field.findOneAndRemove({
-            _id: req.params.id
+            _channel:channel._id,
+            name
         });
         res.send("ok");
     });
 
     app.delete('/channels/del/:id', async (req, res) => {
-        const field = await Channel.findOneAndRemove({
-            _id: req.params.id
+        const channel = await Channel.findByToken(req.params.id);
+        const delChannel = await Channel.findOneAndRemove({
+            _id: channel_id
         });
         res.send('ok');
     });

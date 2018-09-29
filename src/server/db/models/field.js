@@ -1,14 +1,15 @@
 import mongoose from 'mongoose';
 
-const xAxisSchema=mongoose.Schema({
+const dataFieldSchema=mongoose.Schema({
     name:{
         type: String,
         required: true,
         trim: true,
         minlength: 1,
+        unique:true
     },
     value:[{
-        type:String,
+        type:Number,
         trim:true,
     }]
 });
@@ -24,7 +25,17 @@ const fieldSchema = mongoose.Schema({
         trim: true,
         minlength: 1,
     },
+    count:{
+        type:Number,
+        default:0
+    },
     yAxis:{
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 1
+    },
+    xAxis:{
         name:{
             type: String,
             required: true,
@@ -37,7 +48,15 @@ const fieldSchema = mongoose.Schema({
             trim:true,
         }]
     },
-    xAxis:[xAxisSchema]
+    dataFields:[dataFieldSchema],
+    upperLimit:{
+        type:Number,
+        default:null
+    },
+    lowerLimit:{
+        type:Number,
+        default:null
+    }
 });
 
 mongoose.model('fields',fieldSchema);

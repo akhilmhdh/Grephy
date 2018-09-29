@@ -67,7 +67,7 @@ authUtils(app);
 apiAuth(app);
 
 app.get("*",authentication,(req, res) => {
-  const store=createStore(req)
+  const store=createStore(req);
   const promises=matchRoutes(routes,req.path).map(({route})=>{
     return route.loadData ? route.loadData(store):null;
   })
