@@ -18,12 +18,25 @@ export default(req,store) => {
         );
     return(
     `<html>
-    <head></head>
+    <head>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+    <style>
+    h1, h2, p {
+      text-align: center;
+    }
+    .leaflet-container {
+      height: 400px;
+      width: 80%;
+      margin: 0 auto;
+    }
+  </style>
+    </head>
     <body>
         <div id='root'>${content}</div>
         <script>
         window.INITIAL_STATE=${serialize(store.getState())};
         </script>
+        <script type='text/javascript' src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
         <script src="/bundle.js"></script>
     </body>
     </html>`

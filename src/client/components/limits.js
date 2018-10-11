@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import EmailSettings from './emailProvider';
 
 const Limit=(props)=>{
     return(<div>
@@ -15,7 +16,9 @@ class EmailService extends Component{
     render(){
         return(
             <div>
-                {this.state.setting?<Limit upper={this.props.upper} lower={this.props.lower}/>:null}
+                {this.state.setting?<Limit upper={this.props.upper} lower={this.props.lower}/>:
+                <EmailSettings token={this.props.token} name={this.props.fieldName}
+                update={()=>{this.setState({setting:true})}}/>}
             <button onClick={()=>{this.setState({setting:!this.state.setting})}}>(*)</button>
             </div>
         )

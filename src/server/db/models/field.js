@@ -19,6 +19,10 @@ const fieldSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Channel'
     },
+    email:{
+        type:String,
+        trim:true
+    },
     name: {
         type: String,
         required: true,

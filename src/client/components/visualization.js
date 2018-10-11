@@ -15,11 +15,14 @@ class Graph extends Component{
     renderGraph(){
         switch (this.state.element) {
             case "line":
-            return <LineGraph data={this.props.plot} fields={this.props.fields}/>;
+            return <LineGraph data={this.props.plot} fields={this.props.fields} 
+            upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit}/>;
             case "bar":
-            return <BarGraph data={this.props.plot} fields={this.props.fields}/>;
+            return <BarGraph data={this.props.plot} fields={this.props.fields}
+            upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit}/>;
             case "area":
-            return <AreaGraph data={this.props.plot} fields={this.props.fields}/>
+            return <AreaGraph data={this.props.plot} fields={this.props.fields}
+            upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit}/>
         }
     }
     handleChange(event){
@@ -36,7 +39,8 @@ class Graph extends Component{
                 <option value="area">AreaChart</option>
             </select>
             {this.state.showing?this.renderGraph():<FieldDetails data={this.props.data} token={this.props.token}/>}
-            {this.state.option?<EmailService upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit}/>:null}
+            {this.state.option?<EmailService upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit}
+            fieldName={this.props.data.name} token={this.props.token}/>:null}
         </li>
         );
     }

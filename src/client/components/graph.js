@@ -1,5 +1,5 @@
 import React from 'react';
-import { LineChart,Line,Area,Bar,XAxis,YAxis,CartesianGrid,Tooltip,Legend,BarChart,AreaChart } from 'recharts';
+import { LineChart,Line,Area,Bar,XAxis,YAxis,CartesianGrid,Tooltip,Legend,BarChart,AreaChart,ReferenceLine} from 'recharts';
 
 export const LineGraph=(props)=>{
     return(
@@ -9,6 +9,8 @@ export const LineGraph=(props)=>{
 <CartesianGrid strokeDasharray="3 3"/>
 <Tooltip/>
 <Legend />
+<ReferenceLine y={props.upper} label="Max" stroke="red"/>
+<ReferenceLine y={props.lower} label="Min" stroke="blue"/>
 {props.fields.map((el)=>{return <Line type="monotone" dataKey={el.name} stroke="#8884d8" activeDot={{r: 8}}/>})}
 </LineChart>
     )
@@ -23,6 +25,8 @@ export const BarGraph=(props)=>{
 <Tooltip/>
 <Legend />
 {props.fields.map((el)=>{return <Bar  dataKey={el.name} fill="#8884d8"/>})}
+<ReferenceLine y={props.upper} label="Max" stroke="red"/>
+<ReferenceLine y={props.lower} label="Min" stroke="blue"/>
 </BarChart>
     )
 };
@@ -36,6 +40,8 @@ export const AreaGraph=(props)=>{
 <Tooltip/>
 <Legend />
 {props.fields.map((el)=>{return <Area type="monotone" dataKey={el.name} stroke="#8884d8" activeDot={{r: 8}}/>})}
+<ReferenceLine y={props.upper} label="Max" stroke="red"/>
+<ReferenceLine y={props.lower} label="Min" stroke="blue"/>
 </AreaChart>
     )
 };

@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 import { authentication } from '../middleware/auth';
-import jwt from 'jsonwebtoken'
+import Mailer from './../services/Mailer';
+import emailTemplate from './../services/emailTemplate';
 const User = mongoose.model('users');
 const Channel = mongoose.model('channels');
 const Field = mongoose.model('fields');
+
 
 export default (app) => {
     app.post('/channels/new', authentication,async (req, res) => {
@@ -89,13 +91,26 @@ export default (app) => {
             field.xAxis.value.push(req.query.xAxis || field.xAxis.value[field.xAxis.value.length-1] || null);
         }
         field.count+=1;
+        const limitBreaker=new Array();
         field.dataFields.forEach(element => {
             const test=req.query[element.name];
+            if(test>field.upperLimit || test<field.lowerLimit){
+                const temp=element.name;
+                limitBreaker.push({
+                    name:temp,
+                    value:test
+                })
+            }
             !test?element.value.push(element.value[element.value.length-1] || null):element.value.push(test);
         });
+        if(limitBreaker.length!=0){
+            const mailer=new Mailer(field,emailTemplate(limitBreaker,field.name,channel.name));
+            mailer.send();
+        }
         field.save().then(()=>{
             res.send(field);
         });
+        
     });
 
     app.put('/channels/:id/fields/:name/addX', async (req, res) => {
@@ -131,6 +146,22 @@ export default (app) => {
         });
         res.send('ok');
     });
+
+    app.post('/channels/:id/fields/:name/email',async(req,res)=>{
+        const {upper,lower,email}=req.body;
+        const channel=await Channel.findByToken(req.params.id);
+        const field=await Field.findOneAndUpdate({
+            _channel:channel._id,
+            name:req.params.name
+        },{
+            $set:{
+                upperLimit:upper,
+                lowerLimit:lower,
+                email
+            }
+        });
+        res.send(field);
+    })
 
     app.delete('/channels/:id/fields/:name/del', async (req, res) => {
         const {id,name}=req.params;
