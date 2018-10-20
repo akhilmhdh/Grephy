@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import { fetchFieldList } from './../actions/fetchFieldList';
-import Graph from './../components/visualization'             
-import GIS from './..//components/leaflet';
+import { fetchFieldList } from './../actions/fetchFieldList'; 
+import Graph from './../components/visualization';            
+import GIS from './../components/leaflet';
 
 class fieldSection extends Component{
     componentDidMount(){
@@ -10,19 +10,11 @@ class fieldSection extends Component{
     }
     //function to create reChart data array objects
     renderFields(el){
-        const arr=new Array();
-        for(let i=0;i<el.count;i++){
-            const temp={name:el.xAxis.value[i]};
-            el.dataFields.forEach(element => {
-            temp[element.name]=element.value[i];
-        });
-            arr.push(temp);
-        };
-        return(
-            <Graph plot={arr} fields={el.dataFields} 
-            token={this.props.match.params.id} data={el}/>
-        )
+        return(<Graph plot={el.data.values} fields={el.data.name} token={this.props.match.params.id} data={el} />)
         }
+    renderMaps(el){
+        return(<GIS data={el}/>)
+    }
     
     render(){
         if(!this.props.fields){
@@ -32,9 +24,9 @@ class fieldSection extends Component{
             <div>
                 <h1>fieldSection</h1>
                 <ul>
-                {this.props.fields.map((el)=>this.renderFields(el))}
+                    <li>{this.props.fields["graphs"].map(el=>this.renderFields(el))}</li>
+                    <li>{this.props.fields["maps"].map(el=>this.renderMaps(el))}</li>
                 </ul>
-                <GIS/>
             </div>
             );
     }

@@ -16,6 +16,7 @@ import mongoose from './server/db/mongoose';
 import './server/db/models/user';
 import './server/db/models/channel';
 import './server/db/models/field';
+import './server/db/models/maps';
 //ssh rendering template and static route
 import renderer from "./server/utils/renderer";
 
@@ -33,8 +34,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( { useNewUrlParser: true }));
 
 const User = mongoose.model('users');
-const Channel = mongoose.model('channels');
-const Field = mongoose.model('fields');
 
 passport.serializeUser((user, done) => {
   done(null, user.id);

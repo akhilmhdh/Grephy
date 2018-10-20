@@ -1,23 +1,10 @@
 import mongoose from 'mongoose';
 
-const dataFieldSchema=mongoose.Schema({
-    name:{
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 1,
-        unique:true
-    },
-    value:[{
-        type:Number,
-        trim:true,
-    }]
-});
-
-const fieldSchema = mongoose.Schema({
+const graphSchema = mongoose.Schema({
     _channel:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Channel'
+        ref:'Channel',
+        select:false
     },
     email:{
         type:String,
@@ -31,7 +18,8 @@ const fieldSchema = mongoose.Schema({
     },
     count:{
         type:Number,
-        default:0
+        default:0,
+        select:false
     },
     yAxis:{
         type: String,
@@ -40,19 +28,11 @@ const fieldSchema = mongoose.Schema({
         minlength: 1
     },
     xAxis:{
-        name:{
-            type: String,
-            required: true,
-            trim: true,
-            minlength: 1,
-            default:"Time"
-        },
-        value:[{
-            type:String,
-            trim:true,
-        }]
+        type: String,
+        trim: true,
+        minlength: 1,
+        default:"Time"
     },
-    dataFields:[dataFieldSchema],
     upperLimit:{
         type:Number,
         default:null
@@ -60,7 +40,8 @@ const fieldSchema = mongoose.Schema({
     lowerLimit:{
         type:Number,
         default:null
-    }
+    },
+    data:{name:[String],values:Array}
 });
 
-mongoose.model('fields',fieldSchema);
+mongoose.model('graphs',graphSchema);

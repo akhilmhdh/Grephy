@@ -12,6 +12,20 @@ module.exports={
                     ['env',{targets:{browsers:['last 2 versions']}}]
                 ]
             }
+            },
+            {
+                test:/\.(scss|css)$/,
+                use:[
+                    {
+                        loader:'style-loader'
+                    },
+                    {
+                        loader:'css-loader'
+                    },
+                    {
+                        loader:'sass-loader' 
+                    }
+                ]
             }
         ]
     }

@@ -16,13 +16,13 @@ class Graph extends Component{
         switch (this.state.element) {
             case "line":
             return <LineGraph data={this.props.plot} fields={this.props.fields} 
-            upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit}/>;
+            upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit} temp={this.props.data.xAxis}/>;
             case "bar":
             return <BarGraph data={this.props.plot} fields={this.props.fields}
-            upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit}/>;
+            upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit} temp={this.props.data.xAxis.name}/>;
             case "area":
             return <AreaGraph data={this.props.plot} fields={this.props.fields}
-            upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit}/>
+            upper={this.props.data.upperLimit} lower={this.props.data.lowerLimit} temp={this.props.data.xAxis.name}/>
         }
     }
     handleChange(event){
