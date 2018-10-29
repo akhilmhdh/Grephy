@@ -1,7 +1,12 @@
 import 'babel-polyfill';
 import './server/config/config.js';
 
+//server configurations
 import express from "express";
+import socketIO from 'socket.io';
+import http from 'http';
+
+//react-SSH configuration
 import createStore from './server/utils/createStore';
 import { matchRoutes } from 'react-router-config';
 import routes from './client/routes';
@@ -19,8 +24,13 @@ import './server/db/models/field';
 import './server/db/models/maps';
 //ssh rendering template and static route
 import renderer from "./server/utils/renderer";
+import socketConfig from './server/utils/socketConfig'
 
 const app = express();
+const server=http.createServer(app);
+const io=socketIO(server);
+
+socketConfig(io)
 
 app.use(cookieSession({
   maxAge: 15 * 24 * 60 * 60 * 1000,
@@ -75,6 +85,6 @@ app.get("*",authentication,(req, res) => {
   });
 });
 
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log(`localhost at port:${process.env.PORT}`);
 });

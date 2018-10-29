@@ -19,8 +19,8 @@ class FieldDetails extends Component{
                 <h3>{this.props.data.name}</h3>
                 <ul>
                     <li>Y-Axis:{this.props.data.yAxis}</li>
-                    <li>X-Axis:{this.props.data.xAxis.name}</li>
-                    {this.props.data.xAxis.value.map(el=>this.renderDel(this.props.token,this.props.data.name,el))}
+                    <li>X-Axis:{this.props.data.xAxis}</li>
+                    {this.props.data.data.name.map(el=>this.renderDel(this.props.token,this.props.data.name,el))}
                     <li>
                         <form onSubmit={this.props.handleSubmit(value=>{
                             this.props.newDataField(value,this.props.token,this.props.data.name,()=>{this.props.fetchFieldList(this.props.token)})

@@ -227,7 +227,8 @@ export default (app) => {
             const test=req.query[element];
             if(test){
                 const arr=new Array(...test.split(','))
-                map.persons[map.keys.indexOf(element)].pos.push(arr)
+                map.persons[map.keys.indexOf(element)].pos.push(arr);
+                map.persons[map.keys.indexOf(element)].time.push(new Date().getTime());
             }
         });
         map.save().then(()=>{

@@ -9,6 +9,7 @@ import {BrowserRouter}from 'react-router-dom';
 import routes from './routes';
 import reducers from './reducers';
 import axios from 'axios';
+import socketMiddleware from './socketMiddleware';
 
 const axiosInstance=axios.create({
     baseURL:'http://localhost:3000'
@@ -18,7 +19,7 @@ const preloadedStore=window.INITIAL_STATE;
 
 delete window.INITIAL_STATE;
 
-const store=createStore(reducers,preloadedStore,applyMiddleware(thunk.withExtraArgument(axiosInstance)));
+const store=createStore(reducers,preloadedStore,applyMiddleware(thunk.withExtraArgument(axiosInstance),socketMiddleware()));
 
 ReactDOM.hydrate(
     <Provider store={store}>

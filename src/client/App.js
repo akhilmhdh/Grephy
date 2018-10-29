@@ -1,15 +1,22 @@
-import React from 'react';
+import React,{Component} from 'react';
 import { renderRoutes } from 'react-router-config';
 import Header from './components/header';
 import {authVerify} from './actions/authVerify';
 
-const App= ({route}) => {
-    return(
-        <div>
-            <Header/>
-            {renderRoutes(route.routes)}
-        </div>
-    );
+class App extends Component {
+    constructor(props){
+        super(props);
+
+    }
+
+    render(){
+        return(
+            <div>
+                <Header/>
+                {renderRoutes(this.props.route.routes)}
+            </div>
+        )
+    };
 };
 
 export default {
