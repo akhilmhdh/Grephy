@@ -31,7 +31,7 @@ Wait for few seconds and files need to compiled for initial loading using webpac
 
 ## Authors
 
-1.[Akhi](https://github.com/akhilmhdh) 
+1. [Akhi](https://github.com/akhilmhdh) 
 
 
 ## License
