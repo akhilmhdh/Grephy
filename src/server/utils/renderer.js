@@ -20,10 +20,11 @@ export default(req,store) => {
     `<html>
     <head>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/materialize.css"/>
     <style>
-    h1, h2, p {
-      text-align: center;
-    }
     .leaflet-container {
       height: 400px;
       width: 80%;
@@ -37,6 +38,7 @@ export default(req,store) => {
         window.INITIAL_STATE=${serialize(store.getState())};
         </script>
         <script type='text/javascript' src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script src="/js/materialize.min.js" type="text/javascript"></script>
         <script src="/bundle.js"></script>
     </body>
     </html>`

@@ -12,13 +12,13 @@ class EmailSettings extends Component{
 
     render(){
         return(
-            <div>
+            <div className="row">
             <form onSubmit={this.props.handleSubmit((value)=>this.props.limitUpdate(value,this.props.token,this.props.name,()=>{
                 this.props.update()}))}>
             <Field label="upperLimit" type="text" name="upper" component={formInput}/>
             <Field label="lowerLimit" type="text" name="lower" component={formInput}/>
             <Field label="Email Acc" type="text" name="email" component={formInput}/>
-            <button>Set</button>
+            <button className="btn blue pulse">Set</button>
             </form>
             </div>
         );

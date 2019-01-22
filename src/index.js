@@ -8,14 +8,21 @@ import http from 'http';
 
 //react-SSH configuration
 import createStore from './server/utils/createStore';
-import { matchRoutes } from 'react-router-config';
+import {
+  matchRoutes
+} from 'react-router-config';
 import routes from './client/routes';
+
 //token-cookie based authentication
 import passport from 'passport';
 import cookieSession from 'cookie-session';
 import bodyParser from 'body-parser';
+
 //custom middleware for private routes
-import {authentication} from './server/middleware/auth';
+import {
+  authentication
+} from './server/middleware/auth';
+
 //db mongoose configurations
 import mongoose from './server/db/mongoose';
 import './server/db/models/user';
@@ -24,11 +31,11 @@ import './server/db/models/field';
 import './server/db/models/maps';
 //ssh rendering template and static route
 import renderer from "./server/utils/renderer";
-import socketConfig from './server/utils/socketConfig'
+import socketConfig from './server/webSocketConfig/socketConfig'
 
 const app = express();
-const server=http.createServer(app);
-const io=socketIO(server);
+const server = http.createServer(app);
+const io = socketIO(server);
 
 socketConfig(io)
 
@@ -41,7 +48,9 @@ app.use(express.static("public"));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded( { useNewUrlParser: true }));
+app.use(bodyParser.urlencoded({
+  useNewUrlParser: true
+}));
 
 const User = mongoose.model('users');
 
@@ -66,22 +75,30 @@ import githubAuth from './server/utils/authRoutes/github';
 import authUtils from './server/utils/authRoutes/utils';
 
 //api routes
-import apiAuth from './server/api/index';
+import channelApi from './server/api/index';
+import graphApi from './server/api/graph';
+import mapApi from './server/api/maps';
+import restApi from './server/api/rest';
 
 googleAuth(app);
 fbAuth(app);
 githubAuth(app);
 authUtils(app);
 
-apiAuth(app);
+channelApi(app);
+graphApi(app);
+mapApi(app);
+restApi(app);
 
-app.get("*",authentication,(req, res) => {
-  const store=createStore(req);
-  const promises=matchRoutes(routes,req.path).map(({route})=>{
-    return route.loadData ? route.loadData(store):null;
+app.get("*", authentication, (req, res) => {
+  const store = createStore(req);
+  const promises = matchRoutes(routes, req.path).map(({
+    route
+  }) => {
+    return route.loadData ? route.loadData(store) : null;
   })
-  Promise.all(promises).then(()=>{
-    res.send(renderer(req,store));
+  Promise.all(promises).then(() => {
+    res.send(renderer(req, store));
   });
 });
 

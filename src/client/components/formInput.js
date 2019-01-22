@@ -2,7 +2,7 @@ import React from 'react';
 
 export default ({input,label,meta: {error,touched}}) =>{
     return(
-        <div>
+        <div className="input-field">
             <label>{label}</label>
             <input {...input}></input>
             <div>

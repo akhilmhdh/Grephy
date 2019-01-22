@@ -38,6 +38,18 @@ export default (state = null, action) => {
             return ({ ...state,
                 maps: item2
             });
+        case 'videoUpdate':
+            // const item3=state.videos.maps((el)=>{
+            //     if (el.name !== action.result.name) {
+            //         return el;
+            //     }
+            //     return({...el,image:action.result.image});
+
+            // });
+            // console.log({...state,videos:item3});
+            // return({...state,videos:item3})
+            console.log("yo");
+            return(state);
         default:
             return state;
     }

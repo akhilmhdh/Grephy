@@ -28,9 +28,9 @@ class GIS extends Component {
     }
     render(){
       return(
-        <div>
-        <li>
-        
+        <div className="card z-depth-3 solar-blue">
+        <div className="card-content">
+        <span className="card-title">{this.props.data.name}</span>
         <Map center={[9.563172, 76.565652]} zoom={13}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -39,7 +39,7 @@ class GIS extends Component {
         {this.props.data.persons.map(el=>this.renderMarker(el))}
         {this.props.data.persons.map(el=>this.renderLines(el))}
       </Map>
-      </li>
+      </div>
       </div>
     )
     }

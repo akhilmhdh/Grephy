@@ -1,3 +1,4 @@
+//channel joins the room for RTC 
 export const subscribeFieldData=(token,callback)=>{
     return {
       emit:true,
@@ -7,6 +8,7 @@ export const subscribeFieldData=(token,callback)=>{
     }
   }
 
+//GRAPH-RTC
 export const updateField=()=>{
   return{
     event:'updateFieldValue',
@@ -14,6 +16,7 @@ export const updateField=()=>{
   }
 };
 
+//MAP-RTC
 export const updateMaps=()=>{
   return{
     event:'updateMapValue',
@@ -21,12 +24,12 @@ export const updateMaps=()=>{
   }
 };
 
-export const tempCall=(data,callback)=>{
-  return {
-    emit:true,
-    event: 'updateMap',
-    handle:data,
-    err:(err)=>{callback(err)}
+//VIDEO STREAM RTC
+export const updateStream=()=>{
+  return{
+    event:'streamVideo',
+    handle:'videoUpdate'
   }
-}
+};
+
 

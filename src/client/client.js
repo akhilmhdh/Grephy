@@ -9,7 +9,7 @@ import {BrowserRouter}from 'react-router-dom';
 import routes from './routes';
 import reducers from './reducers';
 import axios from 'axios';
-import socketMiddleware from './socketMiddleware';
+import socketMiddleware from './middleware/socketMiddleware';
 
 const axiosInstance=axios.create({
     baseURL:'http://localhost:3000'

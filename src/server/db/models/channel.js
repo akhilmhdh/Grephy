@@ -20,7 +20,13 @@ const channelSchema = new mongoose.Schema({
     },
     token: {
         type: String
-    }
+    },
+    var:[{
+        name:String,
+        value:Array
+    }],
+    templates:[{name:{type:String,trim:true,unique:true}}],
+    videos:[{name:{type:String,trim:true,unique:true}}]
 });
 
 channelSchema.methods.getChannelToken = function () {

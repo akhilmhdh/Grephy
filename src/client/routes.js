@@ -4,6 +4,8 @@ import HomePage from './pages/HomePage';
 import ChannelPage from './pages/ChannelPage';
 import FieldPage from './pages/FieldPage';
 import NewChannelPage from './pages/newChannelPage';
+import TemplatePage from './pages/TemplatePage';
+import newFieldPage from './pages/NewFieldPage';
 
 export default [{
     ...App,
@@ -19,13 +21,23 @@ export default [{
         },
         {
             ...NewChannelPage,
-            path:'/channel/new',
-            exact:true
+            path: '/channel/new',
+            exact: true
         },
         {
             ...FieldPage,
             path: '/channel/:id/fields',
             exact: true
+        }, 
+        {
+            ...TemplatePage,
+            path:'/channel/:id/template/:name',
+            exact: true
+        },
+        {
+            ...newFieldPage,
+            path:'/channel/:id/field/new',
+            exact:true
         }
     ]
 }];

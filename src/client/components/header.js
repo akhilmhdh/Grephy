@@ -8,33 +8,31 @@ class Header extends Component{
     }
     renderHeaderLogo(){
         const headerLogo=this.props.auth?(
-            <div>
-                <Link to="/channel">Grephy</Link>
-            </div>
+                <Link to="/channel" className="brand-logo left">G</Link>
         ):(
-            <div>
-                <Link to="/">Grephy</Link> 
-            </div>
+                <Link to="/" className="brand-logo left">G</Link> 
         );
         return headerLogo;
     }
     renderHeaderButtons(){
         const authButton=this.props.auth?(
-            <a href="/auth/logout">logout</a>
+            <ul className="right"><li><a href="/auth/logout"><i className="fa fa-sign-out fa-lg"></i></a></li></ul>
         ):(
-        <div>
-        <a href="/auth/google">loginG</a>
-        <a href="/auth/facebook">loginF</a>
-        <a href="/auth/github">loginGit</a>
-        </div>);
+        <ul className="right">
+        <li><a href="/auth/google"><i className="fa fa-google fa-lg"></i></a></li>
+        <li><a href="/auth/facebook"><i className="fa fa-facebook fa-lg"></i></a></li>
+        <li><a href="/auth/github"><i className="fa fa-github fa-lg"></i></a></li>
+        </ul>);
         return authButton;
     }
     render(){
         return(
-            <div>
+            <nav>
+            <div className="nav-wrapper">
             {this.renderHeaderLogo()}
             {this.renderHeaderButtons()}
             </div>
+            </nav>
         )
     }
 };
